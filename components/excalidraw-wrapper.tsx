@@ -2,6 +2,7 @@
 import dynamic from "next/dynamic";
 import "@excalidraw/excalidraw/index.css";
 import {useEffect, useState} from "react";
+import {Button, Spin} from "antd";
 
 const Excalidraw = dynamic(
     async () => (await import("@excalidraw/excalidraw")).Excalidraw,
@@ -11,7 +12,7 @@ const Excalidraw = dynamic(
 );
 export default function ExcalidrawWrapper() {
     const [elements, setElements] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [noteName, setNoteName] = useState("Untitled");
     const noteId = 'cmbf7oqqa0000i40vpqt856at'; // Replace with actual note ID or prop
 
@@ -22,7 +23,7 @@ export default function ExcalidrawWrapper() {
 
     const fetchNote = async () => {
         try {
-            // setIsLoading(true);
+            setIsLoading(true);
             const response = await fetch(`/api/note?id=${noteId}`);
             if (!response.ok) throw new Error('Failed to fetch note');
 
@@ -33,11 +34,12 @@ export default function ExcalidrawWrapper() {
         } catch (error) {
             console.error('Error loading note:', error);
         } finally {
-            // setIsLoading(false);
+            setIsLoading(false);
         }
     };
     const saveNote = async () => {
         try {
+            setIsLoading(true);
             const method = noteId ? 'PUT' : 'POST';
             const url = noteId ? `/api/note` : '/api/note';
 
@@ -60,9 +62,11 @@ export default function ExcalidrawWrapper() {
                 // If this was a new note, redirect to the edit page for the new ID
                 // window.history.pushState({}, '', `/notes/${savedNote.id}`);
             }
+            setIsLoading(false);
             alert('保存成功！');
             return savedNote;
         } catch (error) {
+            setIsLoading(false);
             console.error('Error saving note:', error);
             alert('保存失败，请重试！');
             throw error;
@@ -73,14 +77,18 @@ export default function ExcalidrawWrapper() {
     useEffect(() => {
         fetchNote()
     },[])
-    return <div style={{width:'100%', height:'100%'}}>
-        <button onClick={saveNote}>
+    return <div>
+        <Button type={'primary'} onClick={saveNote}>
             保存
-        </button>
-        {
-            elements &&         <Excalidraw langCode={'zh-CN'} onChange={onChange} initialData={{
-                elements:elements||[]
-            }} />
-        }
+        </Button>
+        <Spin spinning={isLoading}>
+            <div style={{ width: '100%', height: 'calc(100vh - 36px)' }}>
+                {
+                    elements &&<Excalidraw langCode={'zh-CN'} onChange={onChange} initialData={{
+                        elements:elements||[]
+                    }} />
+                }
+            </div>
+        </Spin>
     </div>;
 }
