@@ -17,3 +17,11 @@ model User {
   email     String   @unique
   name      String?
 }
+
+// model Note {
+//   id        String      @id @
+//
+//   name      String
+//
+//   @@map("note")
+// }
