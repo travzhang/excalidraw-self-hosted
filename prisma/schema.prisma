@@ -7,7 +7,7 @@ datasource db {
 // Define custom output path for generated Prisma Client
 generator client {
   provider = "prisma-client-js"
-  output   = "../app/generated/prisma-client"
+  // output   = "../app/generated/prisma-client"
 }
 
 // Example data model
@@ -18,10 +18,13 @@ model User {
   name      String?
 }
 
-// model Note {
-//   id        String      @id @
-//
-//   name      String
-//
-//   @@map("note")
-// }
+model Note {
+  id      String @id @default(cuid())
+  name    String
+  content String
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamp(3)
+
+  @@map("note")
+}
