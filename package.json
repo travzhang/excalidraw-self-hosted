@@ -6,11 +6,16 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "preinstall": "prisma generate",
+    "migrate": "prisma migrate dev"
   },
   "dependencies": {
     "@excalidraw/excalidraw": "^0.18.0",
+    "@prisma/client": "^6.8.2",
+    "@prisma/extension-accelerate": "^2.0.1",
     "next": "15.3.3",
+    "prisma": "^6.8.2",
     "react": "^18",
     "react-dom": "^18"
   },
