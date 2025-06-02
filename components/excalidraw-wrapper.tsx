@@ -60,9 +60,11 @@ export default function ExcalidrawWrapper() {
                 // If this was a new note, redirect to the edit page for the new ID
                 // window.history.pushState({}, '', `/notes/${savedNote.id}`);
             }
+            alert('保存成功！');
             return savedNote;
         } catch (error) {
             console.error('Error saving note:', error);
+            alert('保存失败，请重试！');
             throw error;
         }
     };
