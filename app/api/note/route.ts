@@ -1,30 +1,105 @@
-// app/api/users/route.js
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from "@/lib/prisma";
 
+// Get all notes
+export async function GET(request: NextRequest) {
+    try {
+        const notes = await prisma.note.findMany({
+            orderBy: {
+                createdAt: 'desc',
+            },
+        });
+        return NextResponse.json(notes);
+    } catch (error) {
+        return NextResponse.json(
+            { error: "Failed to fetch notes" },
+            { status: 500 }
+        );
+    }
+}
 
-// GET /api/users
-export async function GET(request:NextRequest) {
-    // 处理查询参数
-    const { searchParams } = new URL(request.url);
-    const page = searchParams.get('page') || 1;
+// Create a new note
+export async function POST(request: NextRequest) {
+    try {
+        const { name, content } = await request.json();
 
-    const users2 = await prisma.user.findMany({
-        where: {
-            // email: { endsWith: "prisma.io" }
-        },
-    })
+        if (!name || !content) {
+            return NextResponse.json(
+                { error: "Name and content are required" },
+                { status: 400 }
+            );
+        }
 
-    console.log(users2,'users2')
+        const newNote = await prisma.note.create({
+            data: {
+                name,
+                content,
+            },
+        });
 
-    // 这里可以连接数据库或调用其他服务
-    const users = [
-        { id: 1, name: 'John' },
-        { id: 2, name: 'Jane' },
-    ];
+        return NextResponse.json(newNote, { status: 201 });
+    } catch (error) {
+        return NextResponse.json(
+            { error: "Failed to create note" },
+            { status: 500 }
+        );
+    }
+}
 
-    return NextResponse.json({
-        page,
-        data: users,
-    });
+// Update a note
+export async function PUT(request: NextRequest) {
+    try {
+        const { id, name, content } = await request.json();
+
+        if (!id || !name || !content) {
+            return NextResponse.json(
+                { error: "ID, name and content are required" },
+                { status: 400 }
+            );
+        }
+
+        const updatedNote = await prisma.note.update({
+            where: { id },
+            data: {
+                name,
+                content,
+                updatedAt: new Date(),
+            },
+        });
+
+        return NextResponse.json(updatedNote);
+    } catch (error) {
+        return NextResponse.json(
+            { error: "Failed to update note" },
+            { status: 500 }
+        );
+    }
+}
+
+// Delete a note
+export async function DELETE(request: NextRequest) {
+    try {
+        const { id } = await request.json();
+
+        if (!id) {
+            return NextResponse.json(
+                { error: "Note ID is required" },
+                { status: 400 }
+            );
+        }
+
+        await prisma.note.delete({
+            where: { id },
+        });
+
+        return NextResponse.json(
+            { message: "Note deleted successfully" },
+            { status: 200 }
+        );
+    } catch (error) {
+        return NextResponse.json(
+            { error: "Failed to delete note" },
+            { status: 500 }
+        );
+    }
 }
