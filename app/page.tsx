@@ -5,14 +5,17 @@ import dynamic from "next/dynamic";
 // the excalidraw stuff dynamically with ssr false
 
 const ExcalidrawWrapper = dynamic(
-    async () => (await import("./com/Tst")).default,
+    async () => (await import("@/components/excalidraw-wrapper")).default,
     {
         ssr: false,
     },
 );
 
 export default function Page() {
+    console.log(ExcalidrawWrapper,'ExcalidrawWrapper')
     return (
-        <ExcalidrawWrapper />
+        <div style={{height:'90vh',width:'100%'}}>
+            <ExcalidrawWrapper />
+        </div>
     );
 }
