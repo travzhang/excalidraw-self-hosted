@@ -1,0 +1,50 @@
+{
+  "name": "excalidraw-self-hosted",
+  "private": true,
+  "version": "2.0.0",
+  "description": "Canyon is a JavaScript code coverage solution",
+  "author": "wr.zhang25@gmail.com",
+  "license": "MIT",
+  "scripts": {
+    "dev": "pnpm -r do-dev",
+    "build": "pnpm -r do-build",
+    "test": "pnpm -r do-test",
+    "clean": "node ./scripts/clean.mjs",
+    "preinstall": "node ./scripts/check.mjs",
+    "migrate": "prisma migrate dev --schema ./packages/backend/prisma/schema.prisma"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "19.5.0",
+    "@commitlint/config-conventional": "19.5.0",
+    "husky": "9.1.6",
+    "lint-staged": "15.2.10",
+    "prisma": "^6.4.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "eslint-config-canyon": "1.0.7",
+      "typescript": "5.7.3",
+      "react": "^19",
+      "react-dom": "^19",
+      "@types/react": "^19",
+      "@types/react-dom": "^19",
+      "antd": "^5.24.5",
+      "@ant-design/icons": "^6.0.0",
+      "babel-plugin-react-compiler": "latest",
+      "@vitejs/plugin-react": "4.4.1",
+      "eslint": "^9.22.0",
+      "eslint-plugin-react-hooks": "5.2.0",
+      "eslint-plugin-react-refresh": "0.4.19",
+      "@eslint/js": "9.22.0",
+      "eslint-plugin-react-compiler": "19.1.0-rc.1",
+      "globals": "16.0.0",
+      "eslint-config-prettier": "10.0.1",
+      "eslint-plugin-prettier": "5.2.2",
+      "typescript-eslint": "8.26.1",
+      "vite": "npm:rolldown-vite@latest"
+    }
+  },
+  "pacakgeManager": {
+    "packageManager": "pnpm@9"
+  }
+}

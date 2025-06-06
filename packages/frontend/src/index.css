@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+a {
+  color: #6965db;
+}
+a:hover {
+  color: #6965db;
+  opacity: 0.8;
+  text-decoration: underline;
+}
