@@ -1,5 +1,6 @@
 // import './useWorker.ts';
 // import './i18n.ts';
+import "@excalidraw/excalidraw/index.css";
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.tsx';
